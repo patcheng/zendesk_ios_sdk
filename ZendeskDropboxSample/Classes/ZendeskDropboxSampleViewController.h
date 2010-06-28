@@ -13,7 +13,7 @@
 	UITextField *subjectView;
 	UITextView *descriptionView;
 	
-	IBOutlet UIBarItem *sendButton;
+	IBOutlet UIBarButtonItem *sendButton;
 	IBOutlet UITableView *tableView;
 	
 	BOOL showingKeyboard;

@@ -27,9 +27,7 @@
 	<key>NSMainNibFile</key>
 	<string>MainWindow</string>
 	<key>ZDURL</key>
-	<string>jtribe.zendesk-dev.com</string>
-	<key>ZDURL - 2</key>
-	<string>&lt;your account&gt;.zendesk.com</string>
+	<string>&lt;your domain&gt;.zendesk.com</string>
 	<key>ZDTAG</key>
 	<string>dropbox</string>
 </dict>
