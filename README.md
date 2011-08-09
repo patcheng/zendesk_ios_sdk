@@ -7,15 +7,15 @@ You can integrate the library to your application so that your app users can sen
 
 ZendeskDropbox is a simple class with one single instance method.
 
-- (void)sendTicket:(NSDictionary *)ticketInfo
+	- (void)sendTicket:(NSDictionary *)ticketInfo
 
 sendTicket is an async method. It returns immediately after this method is called. It will not wait until the ticket is submitted to Zendesk server.
 
-In order to get notified about the status of ticket submission, you can implement the delegate methods in ZendeskDropboxDelegate informal protocol.  
+In order to get notified about the status of ticket submission, you can implement the delegate methods in ZendeskDropboxDelegate informal protocol.
 
-- (void)submissionConnectedToServer:(ZendeskDropbox *)connection;
-- (void)submissionDidFinishLoading:(ZendeskDropbox *)connection;
-- (void)submission:(ZendeskDropbox *)connection didFailWithError:(NSError *)error;
+	- (void)submissionConnectedToServer:(ZendeskDropbox *)connection;
+	- (void)submissionDidFinishLoading:(ZendeskDropbox *)connection;
+	- (void)submission:(ZendeskDropbox *)connection didFailWithError:(NSError *)error;
 
 All methods in the protocol are optional. They behave very similar to the NSURLConnection delegate methods.
 
@@ -41,9 +41,9 @@ Dropbox supports only the following fields:
 
 4. Implement ticket sending code:
 
-	ZendeskDropbox *ticketSubmission = [[ZendeskDropbox alloc] init];
-	ticketSubmission.delegate = self;
-	sendButton.enabled = NO;
-	[ticketSubmission sendTicket:[NSDictionary dictionaryWithObjectsAndKeys:descriptionView.text, ZendeskDropboxDescription, emailView.text, ZendeskDropboxEmail, subjectView.text, ZendeskDropboxSubject, nil]];
+		ZendeskDropbox *ticketSubmission = [[ZendeskDropbox alloc] init];
+		ticketSubmission.delegate = self;
+		sendButton.enabled = NO;
+		[ticketSubmission sendTicket:[NSDictionary dictionaryWithObjectsAndKeys:descriptionView.text, ZendeskDropboxDescription, emailView.text, ZendeskDropboxEmail, subjectView.text, ZendeskDropboxSubject, nil]];
 
 5. Implement the delegate methods.  This is optional. Please refer to sample code for details.
