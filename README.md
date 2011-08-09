@@ -1,28 +1,40 @@
-Integration guide for ZendeskDropbox
------------------------------------------
+	                         __                  __         
+	                        /\ \                /\ \        
+	 ____      __    ___    \_\ \     __    ____\ \ \/'\    
+	/\_ ,`\  /'__`\/' _ `\  /'_` \  /'__`\ /',__\\ \ , <    
+	\/_/  /_/\  __//\ \/\ \/\ \L\ \/\  __//\__, `\\ \ \\`\  
+	  /\____\ \____\ \_\ \_\ \___,_\ \____\/\____/ \ \_\ \_\
+	  \/____/\/____/\/_/\/_/\/__,_ /\/____/\/___/   \/_/\/_/
+                                                        
+
+Zendesk iOS development tools
+-----------------------------
 
 ZendeskDropbox is the Cocoa implementation of the web-based Zendesk dropbox (http://blog.zendesk.com/blog/2009/01/instant-support-access-with-drop-box.html).
+Though Zendesk "Dropbox" has been rebranded as the Zendesk "Feedback tab" the name `ZendeskDropbox` is used in the code.
 
 You can integrate the library to your application so that your app users can send support request directly from within the application.
 
-ZendeskDropbox is a simple class with one single instance method.
+`ZendeskDropbox` is a simple class with one single instance method.
 
 	- (void)sendTicket:(NSDictionary *)ticketInfo
 
-sendTicket is an async method. It returns immediately after this method is called. It will not wait until the ticket is submitted to Zendesk server.
+`sendTicket` is an async method. It returns immediately after this method is called. It will not wait until the ticket is submitted to Zendesk server.
 
-In order to get notified about the status of ticket submission, you can implement the delegate methods in ZendeskDropboxDelegate informal protocol.
+In order to get notified about the status of ticket submission, you can implement the delegate methods in `ZendeskDropboxDelegate` informal protocol.
 
 	- (void)submissionConnectedToServer:(ZendeskDropbox *)connection;
 	- (void)submissionDidFinishLoading:(ZendeskDropbox *)connection;
 	- (void)submission:(ZendeskDropbox *)connection didFailWithError:(NSError *)error;
 
-All methods in the protocol are optional. They behave very similar to the NSURLConnection delegate methods.
+All methods in the protocol are optional. They behave very similar to the `NSURLConnection` delegate methods.
 
-Please refer to ZendeskDropbox.h header file for the interface of the class.
+Please refer to `ZendeskDropbox.h` header file for the interface of the class.
 
-Integration instructions
-------------------------------------------
+
+Usage
+-----
+
 1. Add ZendeskDropboxLib to your project.
 
 2. Open Info.plist in your project. Add the key "ZDURL" and put the URL of your Zendesk account there. E.g. "example.zendesk.com"
@@ -30,20 +42,18 @@ Integration instructions
 3. Optionally specify the tag for tickets (the default is dropbox) In Info.plist add the key "ZDTAG" and put a tag . E.g. "iphone"
 
 4. Implement the ticket input form. You have to build your own UI for users to enter information and submit the ticket.
-
-The sample code uses a UITableView to implement a Mail-like interface for ticket input. Please refer to ZendeskDropboxSampleViewController.m for details.
-
+The sample code uses a `UITableView` to implement a Mail-like interface for ticket input. Please refer to `ZendeskDropboxSampleViewController.m` for details.
 Dropbox supports only the following fields:
 
-- email
-- subject
-- description
+	* email
+	* subject
+	* description
 
-4. Implement ticket sending code:
+5. Implement ticket sending code:
 
 		ZendeskDropbox *ticketSubmission = [[ZendeskDropbox alloc] init];
 		ticketSubmission.delegate = self;
 		sendButton.enabled = NO;
 		[ticketSubmission sendTicket:[NSDictionary dictionaryWithObjectsAndKeys:descriptionView.text, ZendeskDropboxDescription, emailView.text, ZendeskDropboxEmail, subjectView.text, ZendeskDropboxSubject, nil]];
 
-5. Implement the delegate methods.  This is optional. Please refer to sample code for details.
+6. Implement the delegate methods.  This is optional. Please refer to sample code for details.
