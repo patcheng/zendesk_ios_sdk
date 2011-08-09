@@ -54,6 +54,8 @@ Dropbox supports only the following fields:
 		ZendeskDropbox *ticketSubmission = [[ZendeskDropbox alloc] init];
 		ticketSubmission.delegate = self;
 		sendButton.enabled = NO;
-		[ticketSubmission sendTicket:[NSDictionary dictionaryWithObjectsAndKeys:descriptionView.text, ZendeskDropboxDescription, emailView.text, ZendeskDropboxEmail, subjectView.text, ZendeskDropboxSubject, nil]];
+		[ticketSubmission sendTicket:[NSDictionary dictionaryWithObjectsAndKeys:descriptionView.text,
+                                              ZendeskDropboxDescription, emailView.text, ZendeskDropboxEmail,
+                                              subjectView.text, ZendeskDropboxSubject, nil]];
 
 6. Implement the delegate methods.  This is optional. Please refer to sample code for details.
