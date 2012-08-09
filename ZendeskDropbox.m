@@ -46,7 +46,7 @@ NSString *const ZendeskURLDoesNotExistException = @"ZDURLDoesNotExist";
 
 - (void)sendTicket:(NSDictionary *)ticketInfo {
 	// create the request
-	NSMutableURLRequest *theRequest=[NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://%@/requests/mobile_api/create", baseURL]]
+	NSMutableURLRequest *theRequest=[NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://%@/requests/mobile_api/create", baseURL]]
 											  cachePolicy:NSURLRequestUseProtocolCachePolicy
 										  timeoutInterval:10.0];
 	[theRequest setHTTPMethod:@"POST"];
