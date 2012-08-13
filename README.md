@@ -30,9 +30,9 @@ Rebuilding the lib
 
 1. Build the target 'ZendeskiPhoneSimulator' against an iPhone simulator
 
-2. Build the target 'ZendeskiPhone' against a an IOS Device (does not have to be connected)
+2. Build the target 'ZendeskiPhone' against an IOS Device (does not have to be connected)
 
-3. Build the target 'libZendeskDropbox' against a an IOS Device (does not have to be connected)
+3. Build the target 'libZendeskDropbox' against an IOS Device (does not have to be connected)
 
 4. The combined lib can then be found in the relevant build directory, in Xcode 4.3.2 this can be found at: 
    ``/Users/{user}/Developer/Xcode/DerivedData/ZendeskDropboxIOS-{...}/Build/Products/libZendeskDropbox/libZendeskDropbox.a``
