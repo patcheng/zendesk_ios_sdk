@@ -14,7 +14,7 @@ Usage
 3. (Optional) specify the tag for tickets (the default is dropbox) In Info.plist add the key "ZDTAG" and put a tag . E.g. "iphone"
 
 4. Implement a ticket input form, the sample code uses a `UITableView` to implement a Mail-like interface for ticket input. 
-Please refer to `ZendeskDropboxSampleViewController.m` for details.
+Please refer to `FormViewController.m` for details.
 
 5. instantiate the dropbox class:
    ``ZendeskDropbox *dropbox = [[ZendeskDropbox alloc] initWithDelegate:self];``
