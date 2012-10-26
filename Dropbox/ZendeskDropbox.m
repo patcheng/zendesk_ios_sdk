@@ -80,9 +80,9 @@ NSString *const ZendeskURLDoesNotExistException = @"ZDURLDoesNotExist";
 		[bodyStr appendFormat:@"set_tags=%@&", tag];
 	}
 	[bodyStr appendFormat:@"description=%@&email=%@&subject=%@&via_id=17&commit=", 
-        [self encodeStringForPost:subject], 
+        [self encodeStringForPost:description],
         [self encodeStringForPost:email], 
-        [self encodeStringForPost:description]];
+        [self encodeStringForPost:subject]];
 	
 	[theRequest setHTTPBody:[bodyStr dataUsingEncoding:NSUTF8StringEncoding]];
     [bodyStr release];
