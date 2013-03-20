@@ -15,6 +15,11 @@
 	UITextField *subject;
 	UITextView *description;
     
+    UITableViewCell *emailCell;
+    UITableViewCell *subjectCell;
+    UITableViewCell *descriptionCell;
+    
+    
     ZendeskDropbox *dropbox;
 }
 

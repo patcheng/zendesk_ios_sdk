@@ -41,7 +41,7 @@ NSString *const ZendeskURLDoesNotExistException = @"ZDURLDoesNotExist";
         // check for tags
         tag = [[theDict valueForKey:@"ZDTAG"] retain];
         if ( tag == nil || [tag isEqualToString:@""] ) {
-            tag = [NSString stringWithString:@"dropbox"];
+            tag = @"dropbox";
         }
     }
 	return self;

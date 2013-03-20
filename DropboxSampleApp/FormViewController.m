@@ -8,6 +8,13 @@
 
 #import "FormViewController.h"
 
+NSString *const emailLabel = @"Email:";
+NSString *const emailSample = @"test@test.com";
+NSString *const subjectLabel = @"Subject:";
+NSString *const sendLabel = @"Send";
+NSString *const successLabel = @"Ticket sent to server successfully";
+NSString *const okLabel = @"OK";
+
 
 @implementation FormViewController
 
@@ -35,6 +42,31 @@
     description.font = [UIFont systemFontOfSize:[UIFont systemFontSize]];
     description.scrollEnabled = NO;
     description.delegate = self;
+    
+    // table cells are finite so declare here
+    emailCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
+                                       reuseIdentifier:nil];
+    emailCell.textLabel.font = [UIFont systemFontOfSize:16];
+    emailCell.textLabel.text = emailLabel;
+    emailCell.textLabel.textColor = [UIColor darkGrayColor];
+    emailCell.selectionStyle = UITableViewCellSelectionStyleNone;
+    email.text = emailSample;
+    emailCell.accessoryView = email;
+    
+    
+    subjectCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
+                                         reuseIdentifier:nil];
+    subjectCell.textLabel.font = [UIFont systemFontOfSize:16];
+    subjectCell.textLabel.text = subjectLabel;
+    subjectCell.textLabel.textColor = [UIColor darkGrayColor];
+    subjectCell.selectionStyle = UITableViewCellSelectionStyleNone;
+    subjectCell.accessoryView = subject;
+    
+    
+    descriptionCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
+                                             reuseIdentifier:nil];
+    descriptionCell.selectionStyle = UITableViewCellSelectionStyleNone;
+    [descriptionCell.contentView addSubview:description];
 }
 
 
@@ -43,7 +75,7 @@
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:NO animated:NO];
     
-    UIBarButtonItem *b = [[UIBarButtonItem alloc] initWithTitle:@"Send" 
+    UIBarButtonItem *b = [[UIBarButtonItem alloc] initWithTitle:sendLabel
                                                           style:(UIBarButtonItemStyleDone) 
                                                          target:self action:@selector(submitTicket)];
     self.navigationItem.rightBarButtonItem = b;
@@ -84,9 +116,9 @@
 {
 	self.navigationItem.rightBarButtonItem.enabled = YES;
 	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil 
-                                                    message:@"Ticket sent to server successfully" 
+                                                    message:successLabel
                                                    delegate:nil 
-                                          cancelButtonTitle:@"OK" 
+                                          cancelButtonTitle:okLabel
                                           otherButtonTitles:nil];
 	[alert show];
 	[alert release];
@@ -100,7 +132,7 @@
 	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:[[error userInfo] valueForKey:NSLocalizedDescriptionKey] 
                                                     message:nil 
                                                    delegate:self 
-                                          cancelButtonTitle:@"OK" 
+                                          cancelButtonTitle:okLabel 
                                           otherButtonTitles:nil];
 	[alert show];
 	[alert release];
@@ -113,57 +145,39 @@
 #pragma mark Table view methods
 
 
-- (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView
+- (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 1;
-}
-
-
-- (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    
     return 3;
 }
 
 
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	UITableViewCell * cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil] autorelease];
-	
-	switch (indexPath.row) {
-		case 0:
-		{
-			cell.textLabel.font = [UIFont systemFontOfSize:16];
-			cell.textLabel.text = @"Email:";
-			cell.textLabel.textColor = [UIColor darkGrayColor];
-			cell.selectionStyle = UITableViewCellSelectionStyleNone;
-			email.text = @"test@test.com";
-			cell.accessoryView = email;
-			break;
-		}
-		case 1:
-		{
-			cell.textLabel.font = [UIFont systemFontOfSize:16];
-			cell.textLabel.text = @"Subject:";
-			cell.textLabel.textColor = [UIColor darkGrayColor];
-			cell.selectionStyle = UITableViewCellSelectionStyleNone;
-			cell.accessoryView = subject;
-			break;
-		}
-		case 2:
-		{
-			cell.selectionStyle = UITableViewCellSelectionStyleNone;
-			[cell.contentView addSubview:description];
-			break;
-		}
-		default:
-			break;
-	}
-    return cell;
+    switch (indexPath.row) {
+            
+        case 0: {
+            return emailCell;
+        }
+        case 1: {
+            
+            return subjectCell;
+            break;
+        }
+        case 2: {
+            return descriptionCell;
+        }
+        default: {
+            return nil;
+        }
+    }
 }
 
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	if (indexPath.row > 1) {
+        
         CGSize s = [description sizeThatFits:CGSizeMake(description.frame.size.width, 10000)];
         float dh = MAX(s.height, 115);
         description.frame = CGRectMake(description.frame.origin.x, 
@@ -194,6 +208,9 @@
 	[description release];
 	[email release];
 	[subject release];
+    [emailCell release];
+    [subjectCell release];
+    [descriptionCell release];
     [super dealloc];
 }
 
