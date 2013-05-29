@@ -4,6 +4,13 @@ Zendesk iOS development tools
 You can integrate this library to your application so that your app users can send support request directly from within the application.
 
 
+Compatibility
+-----
+
+By request there are now 2 versions of the lib, one with JSON lib files included, and one without to avoid conflicts with versions of the JSON framework already present in projects.
+
+Use ZendeskDropboxNoJsonLib if you are providing your own version of the JSON framework.
+
 Usage
 -----
 
@@ -28,13 +35,15 @@ Please refer to `FormViewController.m` for details.
 Rebuilding the lib
 ----------------
 
-1. Build the target 'ZendeskiPhoneSimulator' against an iPhone simulator
+1. Switch all schemes to release target
 
-2. Build the target 'ZendeskiPhone' against an IOS Device (does not have to be connected)
+2. Build the target 'ZendeskiPhoneSimulator' against an iPhone simulator
 
-3. Build the target 'libZendeskDropbox' against an IOS Device (does not have to be connected)
+3. Build the target 'ZendeskiPhone' against an IOS Device (does not have to be connected)
 
-4. The combined lib can then be found in the relevant build directory, in Xcode 4.3.2 this can be found at: 
+4. Build the target 'libZendeskDropbox' against an IOS Device (does not have to be connected)
+
+5. The combined lib can then be found in the relevant build directory, in Xcode 4.3.2 this can be found at: 
    ``/Users/{user}/Developer/Xcode/DerivedData/ZendeskDropboxIOS-{...}/Build/Products/libZendeskDropbox/libZendeskDropbox.a``
 
 
