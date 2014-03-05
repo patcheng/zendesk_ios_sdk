@@ -12,7 +12,7 @@ Pod::Spec.new do |spec|
 	spec.ios.deployment_target 	= '6.0'
 
 	spec.public_header_files	= 'Dropbox/*.h'
-	spec.source_files			= 'Dropbox/ZendeskDropbox.h'
+	spec.source_files			= 'Dropbox/*'
 	spec.dependency	'SBJson'
 end
 
