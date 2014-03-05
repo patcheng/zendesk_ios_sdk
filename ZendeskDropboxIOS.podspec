@@ -13,6 +13,6 @@ Pod::Spec.new do |spec|
 
 	spec.public_header_files	= 'Dropbox/*.h'
 	spec.source_files			= 'Dropbox/*'
-	spec.dependency	'SBJson'
+	spec.dependency	'SBJson', '~> 2.2.3'
 end
 
