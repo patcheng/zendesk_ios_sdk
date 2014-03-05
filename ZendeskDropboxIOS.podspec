@@ -6,7 +6,7 @@ Pod::Spec.new do |spec|
 	spec.homepage				= 'https://github.com/sergey-sportsetter/zendesk_ios_sdk'
 	spec.social_media_url 		= 'https://twitter.com/Zendesk'
 	spec.authors				= { 'Zendesk' => ' support@zendesk.com' }
-	spec.source					= { :git => 'https://github.com/sergey-sportsetter/zendesk_ios_sdk.git' }
+	spec.source					= { :git => 'https://github.com/sergey-sportsetter/zendesk_ios_sdk.git', :tag => '1.0' }
 	spec.requires_arc			= true
 
 	spec.ios.deployment_target 	= '6.0'
