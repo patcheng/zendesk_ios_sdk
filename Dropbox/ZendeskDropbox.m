@@ -7,8 +7,7 @@
 //
 
 #import "ZendeskDropbox.h"
-#import "NSString+SBJSON.h"
-
+#import "SBJson4.h"
 
 NSString *const ZendeskDropboxDescription = @"description";
 NSString *const ZendeskDropboxEmail = @"email";
@@ -27,7 +26,7 @@ NSString *const ZendeskURLDoesNotExistException = @"ZDURLDoesNotExist";
 	self = [super init];
     if (self) {
         NSDictionary *theDict = [[NSBundle mainBundle] infoDictionary];
-        baseURL = [[theDict valueForKey:@"ZDURL"] retain];
+        baseURL = [theDict valueForKey:@"ZDURL"];
         
         // check for base url
         if ( baseURL == nil || [baseURL isEqualToString:@""] ) {
@@ -39,7 +38,7 @@ NSString *const ZendeskURLDoesNotExistException = @"ZDURLDoesNotExist";
         }
         
         // check for tags
-        tag = [[theDict valueForKey:@"ZDTAG"] retain];
+        tag = [theDict valueForKey:@"ZDTAG"];
         if ( tag == nil || [tag isEqualToString:@""] ) {
             tag = @"dropbox";
         }
@@ -61,7 +60,7 @@ NSString *const ZendeskURLDoesNotExistException = @"ZDURLDoesNotExist";
 #pragma mark request control
 
 
-- (void) submitWithEmail:(NSString*)email subject:(NSString*)subject andDescription:(NSString*)description 
+- (void) submitWithEmail:(NSString*)email subject:(NSString*)subject andDescription:(NSString*)description
 {
 	// create the request
     NSString *urlString = [NSString stringWithFormat:@"https://%@/requests/mobile_api/create", baseURL];
@@ -69,8 +68,8 @@ NSString *const ZendeskURLDoesNotExistException = @"ZDURLDoesNotExist";
     
     // configure request
 	NSMutableURLRequest *theRequest = [NSMutableURLRequest requestWithURL:url
-                                                            cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                                        timeoutInterval:10.0];
+                                                              cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                          timeoutInterval:10.0];
 	[theRequest setHTTPMethod:@"POST"];
 	[theRequest setValue:@"1.0" forHTTPHeaderField:@"X-Zendesk-Mobile-API"];
     
@@ -79,16 +78,14 @@ NSString *const ZendeskURLDoesNotExistException = @"ZDURLDoesNotExist";
 	if ( tag != nil ) {
 		[bodyStr appendFormat:@"set_tags=%@&", tag];
 	}
-	[bodyStr appendFormat:@"description=%@&email=%@&subject=%@&via_id=17&commit=", 
-        [self encodeStringForPost:description],
-        [self encodeStringForPost:email], 
-        [self encodeStringForPost:subject]];
+	[bodyStr appendFormat:@"description=%@&email=%@&subject=%@&via_id=17&commit=",
+     [self encodeStringForPost:description],
+     [self encodeStringForPost:email],
+     [self encodeStringForPost:subject]];
 	
 	[theRequest setHTTPBody:[bodyStr dataUsingEncoding:NSUTF8StringEncoding]];
-    [bodyStr release];
     
 	// start the request
-    [theConnection release];
     theConnection = nil;
 	theConnection = [[NSURLConnection alloc] initWithRequest:theRequest delegate:self];
     
@@ -104,9 +101,7 @@ NSString *const ZendeskURLDoesNotExistException = @"ZDURLDoesNotExist";
 - (void) cancelRequest
 {
     [theConnection cancel];
-    [theConnection release];
     theConnection = nil;
-    [receivedData release];
     receivedData = nil;
 }
 
@@ -134,53 +129,61 @@ NSString *const ZendeskURLDoesNotExistException = @"ZDURLDoesNotExist";
 	if ( [delegate respondsToSelector:@selector(submission:didFailWithError:)] ) {
 		[delegate submission:self didFailWithError:error];
 	}
-    [receivedData release];
     receivedData = nil;
-    [theConnection release];
     theConnection = nil;
 }
 
 
 - (void) connectionDidFinishLoading:(NSURLConnection *)connection
 {
-	NSString *theStr = [[[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding] autorelease];
-	JSONString *jstr = [[[JSONString alloc] initWithString:theStr] autorelease];
-	NSDictionary *dict = [jstr JSONValue];
-	
-	NSString *msg = [dict valueForKey:@"error"];
-	if ( msg ) {
-		NSError *myerr = nil;
-		NSRange myrange;
-		myrange = [msg rangeOfString:@"subject"];
-		if ( myrange.location != NSNotFound ) {
-			myerr = [NSError errorWithDomain:NSCocoaErrorDomain 
-                                        code:ZDErrorMissingSubject 
-                                    userInfo:[NSDictionary dictionaryWithObjectsAndKeys:msg, NSLocalizedDescriptionKey, nil]];
-		}
-		myrange = [msg rangeOfString:@"description"];
-		if ( myrange.location != NSNotFound ) {
-			myerr = [NSError errorWithDomain:NSCocoaErrorDomain 
-                                        code:ZDErrorMissingDescription 
-                                    userInfo:[NSDictionary dictionaryWithObjectsAndKeys:msg, NSLocalizedDescriptionKey, nil]];
-		}
-		myrange = [msg rangeOfString:@"email"];
-		if ( myrange.location != NSNotFound ) {
-			myerr = [NSError errorWithDomain:NSCocoaErrorDomain 
-                                        code:ZDErrorMissingEmail 
-                                    userInfo:[NSDictionary dictionaryWithObjectsAndKeys:msg, NSLocalizedDescriptionKey, nil]];
-		}
-		if ( [delegate respondsToSelector:@selector(submission:didFailWithError:)] ) {
-			[delegate submission:self didFailWithError:myerr];
-		}
-	} else {
-		if ( [delegate respondsToSelector:@selector(submissionDidFinishLoading:)] ) {
-			[delegate submissionDidFinishLoading:self];
-		}
-	}
-    [receivedData release];
-    receivedData = nil;
-    [theConnection release];
-    theConnection = nil;
+    SBJson4ValueBlock valueBlock = ^(id v, BOOL *stop) {
+        if ([v isKindOfClass:[NSDictionary class]]) {
+            NSDictionary *dict = (NSDictionary *) v;
+            NSString *msg = [dict valueForKey:@"error"];
+            if ( msg ) {
+                NSError *myerr = nil;
+                NSRange myrange;
+                myrange = [msg rangeOfString:@"subject"];
+                if ( myrange.location != NSNotFound ) {
+                    myerr = [NSError errorWithDomain:NSCocoaErrorDomain
+                                                code:ZDErrorMissingSubject
+                                            userInfo:[NSDictionary dictionaryWithObjectsAndKeys:msg, NSLocalizedDescriptionKey, nil]];
+                }
+                myrange = [msg rangeOfString:@"description"];
+                if ( myrange.location != NSNotFound ) {
+                    myerr = [NSError errorWithDomain:NSCocoaErrorDomain
+                                                code:ZDErrorMissingDescription
+                                            userInfo:[NSDictionary dictionaryWithObjectsAndKeys:msg, NSLocalizedDescriptionKey, nil]];
+                }
+                myrange = [msg rangeOfString:@"email"];
+                if ( myrange.location != NSNotFound ) {
+                    myerr = [NSError errorWithDomain:NSCocoaErrorDomain
+                                                code:ZDErrorMissingEmail
+                                            userInfo:[NSDictionary dictionaryWithObjectsAndKeys:msg, NSLocalizedDescriptionKey, nil]];
+                }
+                if ( [delegate respondsToSelector:@selector(submission:didFailWithError:)] ) {
+                    [delegate submission:self didFailWithError:myerr];
+                }
+            } else {
+                if ( [delegate respondsToSelector:@selector(submissionDidFinishLoading:)] ) {
+                    [delegate submissionDidFinishLoading:self];
+                }
+            }
+            receivedData = nil;
+            theConnection = nil;
+            
+        }
+    };
+    SBJson4ErrorBlock errorBlock = ^(NSError* err) {
+    };
+    
+    id parser = [SBJson4Parser parserWithBlock:valueBlock
+                                allowMultiRoot:YES
+                               unwrapRootArray:YES
+                                  errorHandler:errorBlock];
+    
+    NSData *jsonData = [NSData dataWithData:receivedData];
+    [parser parse:jsonData];
 }
 
 
@@ -193,19 +196,9 @@ NSString *const ZendeskURLDoesNotExistException = @"ZDURLDoesNotExist";
         CFStringRef s = CFURLCreateStringByAddingPercentEscapes(NULL, (CFStringRef)string, NULL,
                                                                 (CFStringRef)@"!*'();:@&=+$,/?%#[]-",
                                                                 kCFStringEncodingUTF8 );
-        return [(NSString*)s autorelease];
+        return (__bridge  NSString*)s;
     }
     return @"";
-}
-
-
-- (void) dealloc
-{
-	[receivedData release];
-	[baseURL release];
-	[tag release];
-    [theConnection release];
-	[super dealloc];
 }
 
 @end

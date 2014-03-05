@@ -39,23 +39,23 @@ enum {
 
 
 /*
-    Three steps to submit a ticket to Zendesk:
+ Three steps to submit a ticket to Zendesk:
  
-    1.  define a key 'ZDURL' in your application's plist with your Zendesk URL as value, 
-        e.g. mysite.zendesk.com.
+ 1.  define a key 'ZDURL' in your application's plist with your Zendesk URL as value,
+ e.g. mysite.zendesk.com.
  
-    2.  instantiate the dropbox class:
-        ZendeskDropbox *dropbox = [[ZendeskDropbox alloc] initWithDelegate:self];
+ 2.  instantiate the dropbox class:
+ ZendeskDropbox *dropbox = [[ZendeskDropbox alloc] initWithDelegate:self];
  
-    3.  Submit the request:
-        [dropbox submitWithEmail:@"Email..." subject:@"Subject" andDescription:@"Description..."];
-*/
+ 3.  Submit the request:
+ [dropbox submitWithEmail:@"Email..." subject:@"Subject" andDescription:@"Description..."];
+ */
 
 @interface ZendeskDropbox : NSObject {
     
-	id <ZendeskDropboxDelegate> delegate;
+	__unsafe_unretained id <ZendeskDropboxDelegate> delegate;
     
-    @private
+@private
 	NSMutableData * receivedData;
 	NSString *baseURL;
 	NSString *tag;
