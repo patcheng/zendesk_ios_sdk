@@ -18,6 +18,7 @@ enum {
 	ZDErrorMissingSubject =				-610001,
 	ZDErrorMissingDescription =			-610002,
 	ZDErrorMissingEmail =				-610003,
+    ZDErrorJSONParserFailed =           -100000,
 };
 
 
@@ -74,7 +75,3 @@ enum {
 - (void) cancelRequest;
 
 @end
-
-
-
-
