@@ -175,6 +175,11 @@ NSString *const ZendeskURLDoesNotExistException = @"ZDURLDoesNotExist";
         }
     };
     SBJson4ErrorBlock errorBlock = ^(NSError* err) {
+        if ([delegate respondsToSelector:@selector(submission:didFailWithError:)]) {
+            NSError *jsonParserError = [NSError errorWithDomain:NSCocoaErrorDomain
+                                                           code:ZDErrorJSONParserFailed userInfo:nil];
+            [delegate submission:self didFailWithError:jsonParserError];
+        }
     };
     
     id parser = [SBJson4Parser parserWithBlock:valueBlock
