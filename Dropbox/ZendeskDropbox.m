@@ -201,7 +201,7 @@ NSString *const ZendeskURLDoesNotExistException = @"ZDURLDoesNotExist";
         CFStringRef s = CFURLCreateStringByAddingPercentEscapes(NULL, (CFStringRef)string, NULL,
                                                                 (CFStringRef)@"!*'();:@&=+$,/?%#[]-",
                                                                 kCFStringEncodingUTF8 );
-        return (__bridge  NSString*)s;
+        return (__bridge_transfer  NSString*)s;
     }
     return @"";
 }
